@@ -75,7 +75,7 @@ const Welcome = () => {
         }}
       >
         <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '3rem', marginBottom: '20px' }}>
-          Welcome to ClayCrafts
+          Welcome to MittiArts
         </h1>
         <p style={{ fontSize: '1.3rem', lineHeight: '1.8', marginBottom: '10px' }}>
           Experience the soul of tradition with our handcrafted clay pots, toys, and Ganesha idols —
