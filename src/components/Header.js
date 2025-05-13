@@ -15,7 +15,7 @@ const Header = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navigate('/')}>
           <ShoppingBagIcon sx={{ color: '#5D4037', fontSize: 32, mr: 1 }} />
           <Typography variant="h6" sx={{ color: '#5D4037', fontWeight: 'bold' }}>
-            ClayCrafts
+            ittiArts
           </Typography>
         </Box>
 
