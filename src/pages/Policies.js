@@ -9,32 +9,37 @@ const fadeIn = keyframes`
 
 const policySections = [
   {
+    title: "Shipping Policy",
+    points: [
+      "Orders are prepared fresh and typically delivered within 30–90 minutes after confirmation, depending on location and order volume.",
+      "Delivery hours: Monday–Sunday: 11 am to 11 pm.",
+      "Advance scheduling available for large orders or catering.",
+      "Standard Delivery Fee: Rs 40; Free for orders over Rs 500.",
+      "Catering or special event deliveries may have additional charges based on distance and size."
+    ]
+  },
+  {
     title: "Terms and Conditions",
     points: [
-      "By accessing and using our platform, you agree to abide by our policies.",
-      "All products listed are handcrafted and subject to slight variations.",
-      "Unauthorized use or duplication of product images or content is prohibited.",
-      "Orders are processed only after payment confirmation.",
-      "We reserve the right to update these terms at any time."
+      "You must be at least 18 years old or have guardian supervision to use our services.",
+      "All orders are subject to acceptance and availability.",
+      "We may refuse or cancel orders due to errors or suspected fraud.",
+      "Delivery estimates may vary; customers must provide accurate addresses.",
+      "All content is our intellectual property and protected by law.",
+      "Customers with allergies must notify staff or include notes during ordering.",
+      "Our total liability is limited to the amount paid for the specific order.",
+      "These terms are governed under Indian law and may change without notice."
     ]
   },
   {
-    title: "Privacy Policy",
+    title: "Refund and Return Policy",
     points: [
-      "We value your privacy and do not share your personal information without consent.",
-      "User data is stored securely and used only to process orders or improve our service.",
-      "We use cookies to enhance user experience and analyze website traffic.",
-      "You can request deletion of your account and personal data at any time."
-    ]
-  },
-  {
-    title: "Shipping, Refund & Return Policy",
-    points: [
-      "We usually ship within 3-5 working days after order confirmation.",
-      "You’ll receive tracking details once your order is dispatched.",
-      "Refunds are issued only for damaged or undelivered items.",
-      "Returns are accepted within 7 days of delivery in unused condition.",
-      "For return or refund requests, please contact our support team with order details."
+      "Refunds are available for incorrect, missing, or poor-quality items.",
+      "Refund requests must be made within 1 hour of receiving the order.",
+      "Returns are not accepted due to the perishable nature of food.",
+      "No refunds for customer errors or external delivery delays.",
+      "To request a refund, provide your order number, issue description, and photos.",
+      "Approved refunds may be credited back within 7–10 days to the original method."
     ]
   }
 ];
@@ -70,6 +75,7 @@ const Policies = () => {
               backgroundColor: "#fff",
               animation: `${fadeIn} 0.8s ease ${index * 0.2}s forwards`,
               opacity: 0,
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Typography variant="h5" sx={{ mb: 2, color: "#7b4929", fontWeight: 600 }}>
@@ -85,6 +91,10 @@ const Policies = () => {
             {index !== policySections.length - 1 && <Divider sx={{ mt: 3 }} />}
           </Paper>
         ))}
+
+        <Typography align="center" sx={{ mt: 4, fontSize: 14, color: "#7a4b2c" }}>
+          For queries, contact us at +91-7382150250 or mittiarts0@gmail.com
+        </Typography>
       </Container>
     </Box>
   );
