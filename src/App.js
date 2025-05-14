@@ -7,6 +7,9 @@ import ProductDetail from './pages/ProductDetail';
 import About from './pages/aboutus';
 import Policies from './pages/Policies';
 import ContactUs from './pages/Contact';
+import AuthForm from './components/AuthForm';
+import Profile from './pages/Profile';
+import Cart from './pages/Cart';
 
 const App = () => {
   return (
@@ -19,6 +22,9 @@ const App = () => {
       <Route path="/about" element={<About />} />
       <Route path="/policies" element={<Policies />} />
       <Route path="/contactus" element={<ContactUs />} />
+      <Route path="/auth" element={<AuthForm />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/cart" element={<Cart />} />
       </Routes>
     </Router>
   );
