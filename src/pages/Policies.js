@@ -80,7 +80,7 @@ const policySections = [
     points: [
       "Refunds are available for incorrect, missing, or poor-quality items.",
       "Refund requests must be made within 24 hours of receiving the order.",
-      "Returns are not accepted due to the perishable nature of product.",
+      "Returns are not accepted due to the nature of product.",
       "No refunds for customer errors or external delivery delays.",
       "To request a refund, provide your order number, issue description, and photos.",
       "Approved refunds may be credited back within 7–10 days to the original method."
