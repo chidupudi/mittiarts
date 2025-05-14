@@ -11,7 +11,7 @@ const policySections = [
   {
     title: "Shipping Policy",
     points: [
-      "Orders are prepared fresh and typically delivered within 30–90 minutes after confirmation, depending on location and order volume.",
+      "Orders are prepared fresh and typically delivered within 3-5 days after confirmation, depending on location and order volume.",
       "Delivery hours: Monday–Sunday: 11 am to 11 pm.",
       "Advance scheduling available for large orders or catering.",
       "Standard Delivery Fee: Rs 40; Free for orders over Rs 500.",
@@ -35,8 +35,8 @@ const policySections = [
     title: "Refund and Return Policy",
     points: [
       "Refunds are available for incorrect, missing, or poor-quality items.",
-      "Refund requests must be made within 1 hour of receiving the order.",
-      "Returns are not accepted due to the perishable nature of food.",
+      "Refund requests must be made within 24 hours of receiving the order.",
+      "Returns are not accepted due to the perishable nature of product.",
       "No refunds for customer errors or external delivery delays.",
       "To request a refund, provide your order number, issue description, and photos.",
       "Approved refunds may be credited back within 7–10 days to the original method."
