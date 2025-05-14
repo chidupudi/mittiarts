@@ -44,6 +44,7 @@ const Welcome = () => {
           zIndex: 0,
           height: '100vh',
           width: '100vw',
+          pointerEvents: 'none',
         }}
         camera={{ position: [0, 0, 8], fov: 60 }}
       >
