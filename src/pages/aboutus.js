@@ -54,7 +54,7 @@ const About = () => {
               Deep Roots in Sacred Soil
             </Typography>
             <Typography>
-              Our story begins with earth – the humble clay from Indian rivers. From this soil, shaped by time and touched by faith, come the sacred forms of our Ganesha idols and the warmth of earthen cookware. Each item carries the vibration of tradition, the rhythm of our ancestors, and the pulse of sustainable living.
+              Our story begins with earth – the humble clay from Indian rivers. From this sacred soil, shaped by time and touched by faith, come our divine idols and the warmth of earthen cookware. Each piece carries the vibration of tradition, the rhythm of our ancestors, and the pulse of sustainable living.
             </Typography>
           </Paper>
         </Fade>

@@ -79,7 +79,7 @@ const Welcome = () => {
           Welcome to MittiArts
         </h1>
         <p style={{ fontSize: '1.3rem', lineHeight: '1.8', marginBottom: '10px' }}>
-          Experience the soul of tradition with our handcrafted clay pots, toys, and Ganesha idols —
+          Experience the soul of tradition with our handcrafted clay pots
           each piece shaped with devotion and love.
         </p>
         <p style={{ fontSize: '1.2rem', color: '#6D4C41', marginBottom: '25px' }}>

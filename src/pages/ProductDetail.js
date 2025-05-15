@@ -150,11 +150,7 @@ const ProductDetail = () => {
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-IN', { 
-      style: 'currency', 
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(price);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
   };
 
   if (loading) {
@@ -236,7 +232,7 @@ const ProductDetail = () => {
               <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 1 }}>
                 {product.discount && (
                   <Chip
-                    label={`Rs  {product.discount}% OFF`}
+                    label={`${product.discount}% OFF`}
                     color="error"
                     size="small"
                     sx={{ fontWeight: 700, mr: 1 }}
@@ -596,16 +592,14 @@ const ProductDetail = () => {
                 </Typography>
                 <Box sx={{ mb: 3 }}>
                   <Paper elevation={0} sx={{ p: 2, mb: 2, borderRadius: 2 }}>
-                    <Box
-                      sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}
-                    >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                       <Typography variant="subtitle1" fontWeight={500}>
                         Beautiful and Functional
                       </Typography>
                       <Rating value={5} size="small" readOnly />
                     </Box>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                      By Emily R. on May 10, 2023
+                      By Priya Sharma on May 10, 2023
                     </Typography>
                     <Typography variant="body1">
                       These clay plates have transformed our dining experience. Food tastes better, and the rustic aesthetic is perfect for our farmhouse table. Highly recommend!
@@ -613,16 +607,14 @@ const ProductDetail = () => {
                   </Paper>
 
                   <Paper elevation={0} sx={{ p: 2, borderRadius: 2 }}>
-                    <Box
-                      sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}
-                    >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                       <Typography variant="subtitle1" fontWeight={500}>
                         Authentic Craftsmanship
                       </Typography>
                       <Rating value={4} size="small" readOnly />
                     </Box>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                      By Michael T. on April 28, 2023
+                      By Rajesh Patel on April 28, 2023
                     </Typography>
                     <Typography variant="body1">
                       You can tell these are made by real artisans. Each plate has slight variations that add character. The only reason for 4 stars is that one plate had a small chip on arrival, but customer service was excellent about replacing it.

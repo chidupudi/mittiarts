@@ -39,9 +39,9 @@ const policySections = [
     color: "#8a5a44",
     bgColor: "#fff9f5",
     points: [
-      "Orders are prepared fresh and typically delivered within 3-5 days after confirmation, depending on location and order volume.",
+      "Orders are prepared and typically delivered within 3-5 days after confirmation, depending on location and order volume.",
       "Delivery hours: Monday–Sunday: 11 am to 11 pm.",
-      "Advance scheduling available for large orders or catering.",
+      "Advance scheduling available for large orders.",
       "Standard Delivery Fee: Rs 40; Free for orders over Rs 500.",
       "Catering or special event deliveries may have additional charges based on distance and size."
     ]
