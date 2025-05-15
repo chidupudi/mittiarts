@@ -52,7 +52,7 @@ const policySections = [
     color: "#5e7a3c",
     bgColor: "#f5fff5",
     points: [
-      "Welcome to Mitti Arts! These terms and conditions outline the rules and regulations for using our website and services.",
+      "Welcome to Mitti Arts!(Telangana Shilpa Kala) These terms and conditions outline the rules and regulations for using our website and services.",
       "\"We\", \"us\", and \"our\" refer to Mitti Arts and its affiliates.",
       "\"You\" and \"your\" refer to the user of the website.",
       "You must be at least 18 years old to use our website.",
@@ -390,7 +390,7 @@ const Policies = () => {
             Need More Information?
           </Typography>
           <Typography sx={{ color: "#7a4b2c", mb: 1 }}>
-            Contact our customer support team for any policy-related queries
+            Contact our customer support team for any policy-related queries (Telangana Shilpa Kala).
           </Typography>
           <Typography 
             sx={{ 
