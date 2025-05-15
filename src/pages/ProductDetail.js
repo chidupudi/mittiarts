@@ -150,7 +150,11 @@ const ProductDetail = () => {
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    }).format(price);
   };
 
   if (loading) {
@@ -477,7 +481,7 @@ const ProductDetail = () => {
                   sx={{ mr: 1, fontSize: '1.2rem' }}
                 />
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  Free delivery on orders over Rs  50
+                  Free delivery on orders over ₹5000
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
