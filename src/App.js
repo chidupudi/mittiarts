@@ -11,6 +11,7 @@ import ContactUs from './pages/Contact';
 import AuthForm from './components/AuthForm';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
+// import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/cart" element={<Cart />} />
       </Routes>
+      {/* <Footer/> */}
       <Analytics />
     </Router>
   );

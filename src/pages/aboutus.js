@@ -89,38 +89,10 @@ const About = () => {
           </Grid>
 
           {/* SOCIAL IMPACT */}
-          <Grid item xs={12}>
-            <Fade in timeout={1800}>
-              <Paper elevation={4} sx={{ p: 4, backgroundColor: "#fff1e6", borderRadius: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
-                  Crafting Livelihoods
-                </Typography>
-                <Typography>
-                  Every purchase contributes to the livelihood of rural families. We provide tools, fair wages, and training to the next generation of potters and sculptors, ensuring these ancient skills survive and thrive.
-                </Typography>
-              </Paper>
-            </Fade>
-          </Grid>
+
 
           {/* CUSTOMER VOICES */}
-          <Grid item xs={12}>
-            <Fade in timeout={2000}>
-              <Paper elevation={4} sx={{ p: 4, backgroundColor: "#fff8ef", borderRadius: 4 }}>
-                <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
-                  Customer Experiences
-                </Typography>
-                <Typography sx={{ mb: 2, fontStyle: "italic" }}>
-                  “It felt like bringing a piece of temple energy home.” – Priya D.
-                </Typography>
-                <Typography sx={{ mb: 2, fontStyle: "italic" }}>
-                  “The clay pot made my biryani taste just like grandma's. Truly magical!” – Arjun M.
-                </Typography>
-                <Typography sx={{ fontStyle: "italic" }}>
-                  “Beautiful packaging, divine idol, fast delivery. Thank you for this blessing.” – Karthik V.
-                </Typography>
-              </Paper>
-            </Fade>
-          </Grid>
+          
         </Grid>
 
         {/* CTA */}
