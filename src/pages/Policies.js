@@ -43,7 +43,7 @@ const policySections = [
       "Delivery hours: Monday–Sunday: 11 am to 11 pm.",
       "Advance scheduling available for large orders.",
       "Standard Delivery Fee: Rs 40; Free for orders over Rs 500.",
-      "Catering or special event deliveries may have additional charges based on distance and size."
+      "Special event deliveries may have additional charges based on distance and size."
     ]
   },
   {
