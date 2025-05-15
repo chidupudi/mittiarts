@@ -53,12 +53,13 @@ export default function AuthForm() {
 
       if (isLogin) {
         userCred = await signInWithEmailAndPassword(auth, email, password);
-        setSuccess('Logged in successfully');
-
         const userDoc = await getDoc(doc(db, 'users', userCred.user.uid));
         const userData = userDoc.exists() ? userDoc.data() : {};
         nameToStore = userData.name || 'User';
 
+        // Store phone number from userData
+        localStorage.setItem('userPhone', userData.phone || '');
+        setSuccess('Logged in successfully');
       } else {
         userCred = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -70,12 +71,16 @@ export default function AuthForm() {
         });
 
         setSuccess('Signed up successfully');
+
+        // Add phone number to localStorage after successful signup
+        localStorage.setItem('userPhone', phone);
       }
 
       const token = await userCred.user.getIdToken();
       localStorage.setItem('authToken', token);
       localStorage.setItem('userEmail', email);
       localStorage.setItem('userName', nameToStore);
+      localStorage.setItem('userId', userCred.user.uid);
 
       setForm({
         name: '',
@@ -97,19 +102,35 @@ export default function AuthForm() {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
+      // Get user data from Firestore if exists
       const userDoc = await getDoc(doc(db, 'users', user.uid));
+      
       if (!userDoc.exists()) {
-        await setDoc(doc(db, 'users', user.uid), {
-          name: user.displayName,
+        // Create new user document with Google profile data
+        const userData = {
+          name: user.displayName || 'Google User',
           email: user.email,
+          phone: user.phoneNumber || '', // Get phone from Google profile if available
           createdAt: new Date().toISOString(),
-        });
+        };
+
+        // Save to Firestore
+        await setDoc(doc(db, 'users', user.uid), userData);
+        
+        // Save to localStorage
+        localStorage.setItem('userPhone', userData.phone);
+      } else {
+        // User exists, get their phone number
+        const existingData = userDoc.data();
+        localStorage.setItem('userPhone', existingData.phone || '');
       }
 
+      // Save other user data to localStorage
       const token = await user.getIdToken();
       localStorage.setItem('authToken', token);
       localStorage.setItem('userEmail', user.email);
       localStorage.setItem('userName', user.displayName || 'Google User');
+      localStorage.setItem('userId', user.uid);
 
       setSuccess('Signed in with Google successfully');
     } catch (err) {

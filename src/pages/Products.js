@@ -165,22 +165,34 @@ const Products = () => {
     return unsubscribe;
   }, []);
 
-  // Modify the assignProductDetails function
+  // Replace the existing assignProductDetails function with this:
   const assignProductDetails = (products) => {
     return products.map((product) => {
-      const finalPrice = product.price; // This is the price you provided
-      const originalPrice = Math.round(finalPrice * (1 + Math.random() * 0.3)); // Calculate original price 10-30% higher
-      const discount = Math.round(((originalPrice - finalPrice) / originalPrice) * 100); // Calculate actual discount
+      let discount = 0;
+      const targetPrice = product.price; // This is the price you want to actually sell at
+
+      // Calculate discount percentage based on price ranges
+      if (targetPrice >= 50 && targetPrice <= 300) {
+        discount = 10;
+      } else if (targetPrice > 300 && targetPrice <= 1000) {
+        discount = 20;
+      } else if (targetPrice > 1000) {
+        discount = 25;
+      }
+
+      // Calculate inflated original price by working backwards from the discount
+      // Formula: originalPrice = targetPrice / (1 - discount/100)
+      const originalPrice = Math.ceil(targetPrice / (1 - discount/100));
 
       return {
         ...product,
         imgUrl: product.images?.[0] || 'https://via.placeholder.com/150',
-        rating: (Math.random() * (4.6 - 3.9) + 3.9).toFixed(1),
-        originalPrice: originalPrice,
-        finalPrice: finalPrice,
+        rating: product.rating || 4.0,
+        originalPrice: originalPrice, // Inflated price
+        finalPrice: targetPrice, // The actual price you want to sell at
         discount: discount,
-        reviews: Math.floor(Math.random() * 500) + 10,
-        isFeatured: Math.random() > 0.7,
+        reviews: product.reviews || 0,
+        isFeatured: product.isFeatured || false
       };
     });
   };

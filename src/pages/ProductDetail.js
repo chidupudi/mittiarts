@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -71,6 +71,12 @@ const ProductDetail = () => {
   const [tabValue, setTabValue] = useState(0);
   const [loading, setLoading] = useState(true);
   const [addedToCart, setAddedToCart] = useState(false);
+  
+  // Zoom effect related states
+  const [showZoom, setShowZoom] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const imageContainerRef = useRef(null);
+  const [zoomScale] = useState(2.5);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -157,6 +163,25 @@ const ProductDetail = () => {
     }).format(price);
   };
 
+  // Handle image zoom functionality
+  const handleImageMouseMove = (e) => {
+    if (!imageContainerRef.current) return;
+    
+    const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    
+    setZoomPosition({ x, y });
+  };
+
+  const handleImageMouseEnter = () => {
+    setShowZoom(true);
+  };
+
+  const handleImageMouseLeave = () => {
+    setShowZoom(false);
+  };
+
   if (loading) {
     return (
       <Container maxWidth="lg" sx={{ p: 3 }}>
@@ -217,160 +242,122 @@ const ProductDetail = () => {
       </Box>
 
       {/* Main product section */}
-      <Grid container spacing={4}>
-        {/* Image gallery - Left side */}
+      <Grid container spacing={3}>
+        {/* Left side - Images */}
         <Grid item xs={12} md={6}>
-          <Fade in={true} timeout={500}>
-            <Paper
-              elevation={0}
+          <Box sx={{ position: 'relative' }}>
+            {/* Main large image */}
+            <Box
+              ref={imageContainerRef}
+              onMouseMove={handleImageMouseMove}
+              onMouseEnter={handleImageMouseEnter}
+              onMouseLeave={handleImageMouseLeave}
               sx={{
-                borderRadius: 2,
-                overflow: 'hidden',
                 position: 'relative',
-                bgcolor: 'background.paper',
+                cursor: 'zoom-in',
+                overflow: 'hidden',
+                height: { xs: 350, sm: 450, md: 500 },
                 border: '1px solid',
-                borderColor: 'divider'
+                borderColor: 'divider',
+                borderRadius: 1,
+                mb: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: '#f8f8f8'
               }}
             >
-              {/* Badges */}
-              <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 1 }}>
-                {product.discount && (
-                  <Chip
-                    label={`${product.discount}% OFF`}
-                    color="error"
-                    size="small"
-                    sx={{ fontWeight: 700, mr: 1 }}
-                  />
-                )}
-              </Box>
-
-              {/* Wishlist button */}
-              <IconButton
-                aria-label="add to wishlist"
-                onClick={() => setWishlisted(!wishlisted)}
+              <Box
+                component="img"
+                src={selectedImage}
+                alt={product.name}
                 sx={{
-                  position: 'absolute',
-                  top: 16,
-                  right: 16,
-                  zIndex: 1,
-                  bgcolor: 'background.paper',
-                  '&:hover': {
-                    bgcolor: 'background.paper',
-                  },
-                }}
-              >
-                {wishlisted ? (
-                  <Favorite color="error" />
-                ) : (
-                  <FavoriteBorder color="disabled" />
-                )}
-              </IconButton>
-
-              {/* Main image */}
-              <CardMedia
-                component={motion.div}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-                image={selectedImage}
-                sx={{
-                  height: { xs: 300, sm: 400, md: 500 },
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center',
-                  bgcolor: '#f5f5f5',
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain'
                 }}
               />
+            </Box>
 
-              {/* Thumbnail gallery */}
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: 1,
-                  p: 2,
-                  overflowX: 'auto',
-                  '&::-webkit-scrollbar': { display: 'none' },
-                }}
-              >
-                {(product.images || [product.imgUrl || 'https://via.placeholder.com/300']).map(
-                  (img, i) => (
-                    <CardActionArea
-                      key={i}
-                      onClick={() => setSelectedImage(img)}
-                      sx={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 1,
-                        overflow: 'hidden',
-                        border: selectedImage === img ? '2px solid' : '1px solid',
-                        borderColor: selectedImage === img ? 'primary.main' : 'divider',
-                      }}
-                    >
-                      <CardMedia
-                        component="img"
-                        image={img}
-                        alt={`thumb-Rs  {i}`}
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover',
-                        }}
-                      />
-                    </CardActionArea>
-                  )
-                )}
-              </Box>
-            </Paper>
-          </Fade>
-        </Grid>
-
-        {/* Product info - Right side */}
-        <Grid item xs={12} md={6}>
-          <Box
-            component={motion.div}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-          >
-            <Typography
-              variant="h4"
-              component="h1"
+            {/* Thumbnail strip */}
+            <Box
               sx={{
-                fontWeight: 700,
-                mb: 1,
-                lineHeight: 1.2,
-                color: 'text.primary',
+                display: 'flex',
+                gap: 1,
+                mt: 2,
+                overflowX: 'auto',
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': { display: 'none' },
               }}
             >
+              {(product.images || [product.imgUrl]).map((img, i) => (
+                <Box
+                  key={i}
+                  onClick={() => setSelectedImage(img)}
+                  sx={{
+                    width: 70,
+                    height: 70,
+                    flexShrink: 0,
+                    border: selectedImage === img ? '2px solid' : '1px solid',
+                    borderColor: selectedImage === img ? 'primary.main' : 'divider',
+                    borderRadius: 1,
+                    cursor: 'pointer',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={img}
+                    alt={`Product view ${i + 1}`}
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* Right side - Product information */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ height: '100%', pl: { md: 4 } }}>
+            <Typography variant="h4" component="h1" gutterBottom>
               {product.name}
             </Typography>
-
+            
+            {/* Rating and code */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
               <Rating
                 value={parseFloat(product.rating)}
                 precision={0.1}
                 readOnly
-                icon={<Star fontSize="inherit" />}
-                emptyIcon={<StarBorder fontSize="inherit" />}
-                sx={{ color: 'secondary.main', mr: 1 }}
+                size="small"
+                sx={{ mr: 1 }}
               />
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ mr: 2 }}>
                 {product.rating} ({product.reviews} reviews)
               </Typography>
-              <Chip
+              <Chip 
                 label={product.code}
                 size="small"
-                sx={{ ml: 2, bgcolor: 'action.selected', fontWeight: 500 }}
+                sx={{ bgcolor: 'action.selected' }}
               />
             </Box>
 
             <Divider sx={{ my: 2 }} />
 
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            {/* Price section styled like Amazon */}
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                List Price:
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'baseline', mb: 0.5 }}>
                 <Typography
                   variant="h4"
-                  sx={{ fontWeight: 700, color: 'primary.main', mr: 2 }}
+                  sx={{ fontWeight: 500, color: 'error.main', mr: 2 }}
                 >
                   {formatPrice(product.price)}
                 </Typography>
@@ -387,18 +374,21 @@ const ProductDetail = () => {
                 )}
               </Box>
               {product.discount && (
-                <Typography variant="body2" color="success.main">
-                  You save {formatPrice(product.originalPrice - product.price)} (
-                  {product.discount}%)
+                <Typography variant="body2" color="success.main" sx={{ fontWeight: 500 }}>
+                  You save {formatPrice(product.originalPrice - product.price)} ({product.discount}%)
                 </Typography>
               )}
+              <Typography variant="body2" color="success.main" sx={{ fontWeight: 600, mt: 0.5 }}>
+                In Stock
+              </Typography>
             </Box>
 
+            {/* Short description - Amazon style */}
             <Typography
-              variant="body1"
-              sx={{ mb: 3, color: 'text.secondary', lineHeight: 1.6 }}
+              variant="body2"
+              sx={{ mb: 3, color: 'text.primary', lineHeight: 1.6 }}
             >
-              Experience the joy of traditional dining with our handcrafted Clay Eating Plates. These plates are made from 100% natural clay and are shaped carefully by artisans to preserve heritage while offering everyday utility. Each plate carries a rustic charm and is perfect for meals that connect you with nature. Using clay plates adds an earthy essence to food, enhancing flavor and texture. They're easy to clean, biodegradable, and a sustainable alternative to plastic or metal plates. Embrace a slow, mindful lifestyle with every meal.
+              Experience the joy of traditional dining with our handcrafted Clay Eating Plates. These plates are made from 100% natural clay and are shaped carefully by artisans to preserve heritage while offering everyday utility.
             </Typography>
 
             {/* Key features */}
@@ -407,10 +397,10 @@ const ProductDetail = () => {
                 Highlights:
               </Typography>
               <List dense sx={{ py: 0 }}>
-                {product.features?.map((feature, index) => (
+                {product.features?.slice(0, 3).map((feature, index) => (
                   <ListItem key={index} sx={{ py: 0.5 }}>
                     <ListItemIcon sx={{ minWidth: 32 }}>
-                      <CheckCircle color="primary" fontSize="small" />
+                      <CheckCircle color="success" fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary={feature} />
                   </ListItem>
@@ -418,56 +408,98 @@ const ProductDetail = () => {
               </List>
             </Box>
 
-            {/* Action buttons */}
+            {/* Action buttons - Amazon style */}
             <Box
               sx={{
-                display: 'flex',
-                gap: 2,
                 mt: 'auto',
-                flexWrap: 'wrap',
+                p: 2,
+                bgcolor: 'background.paper',
+                borderRadius: 1,
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             >
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                startIcon={<ShoppingCart />}
-                onClick={handleOpenDialog}
-                sx={{
-                  flexGrow: 1,
-                  py: 1.5,
-                  borderRadius: 1,
-                  minWidth: 200,
-                  fontWeight: 700,
-                  textTransform: 'none',
-                  fontSize: '1rem'
-                }}
-                disabled={addedToCart}
-              >
-                {addedToCart ? 'Added to Cart' : 'Add to Cart'}
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                sx={{
-                  flexGrow: 1,
-                  py: 1.5,
-                  borderRadius: 1,
-                  minWidth: 200,
-                  fontWeight: 700,
-                  textTransform: 'none',
-                  fontSize: '1rem'
-                }}
-              >
-                Buy Now
-              </Button>
+              <Box sx={{ mb: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="body2" sx={{ mr: 2, minWidth: 70 }}>
+                    Quantity:
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      color="primary"
+                      size="small"
+                      sx={{ border: '1px solid', borderColor: 'divider' }}
+                    >
+                      <Remove fontSize="small" />
+                    </IconButton>
+                    <TextField
+                      value={quantity}
+                      onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                      inputProps={{ min: 1, style: { textAlign: 'center' } }}
+                      sx={{ mx: 1, '& .MuiOutlinedInput-root': { width: 60, height: 36 } }}
+                      size="small"
+                    />
+                    <IconButton
+                      onClick={() => setQuantity(quantity + 1)}
+                      color="primary"
+                      size="small"
+                      sx={{ border: '1px solid', borderColor: 'divider' }}
+                    >
+                      <Add fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Box>
+              
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  size="large"
+                  onClick={handleAddToCart}
+                  sx={{
+                    py: 1,
+                    borderRadius: '20px',
+                    fontWeight: 500,
+                    textTransform: 'none',
+                    fontSize: '0.9rem',
+                    bgcolor: '#FFD814',
+                    color: '#111',
+                    '&:hover': {
+                      bgcolor: '#F7CA00',
+                    }
+                  }}
+                  disabled={addedToCart}
+                >
+                  {addedToCart ? 'Added to Cart' : 'Add to Cart'}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  size="large"
+                  sx={{
+                    py: 1,
+                    borderRadius: '20px',
+                    fontWeight: 500,
+                    textTransform: 'none',
+                    fontSize: '0.9rem',
+                    bgcolor: '#FFA41C',
+                    color: '#111',
+                    '&:hover': {
+                      bgcolor: '#FA8900',
+                    }
+                  }}
+                >
+                  Buy Now
+                </Button>
+              </Box>
             </Box>
 
             {/* Delivery info */}
             <Box
               sx={{
-                mt: 3,
+                mt: 2,
                 p: 2,
                 bgcolor: 'background.paper',
                 borderRadius: 1,
@@ -507,7 +539,7 @@ const ProductDetail = () => {
         </Grid>
       </Grid>
 
-      {/* Product details tabs */}
+      {/* Product details tabs - Below both product image and info sections */}
       <Box sx={{ mt: 6 }}>
         <Paper elevation={0} sx={{ borderRadius: 2, overflow: 'hidden', border: '1px solid', borderColor: 'divider' }}>
           <Tabs
@@ -535,6 +567,9 @@ const ProductDetail = () => {
                 </Typography>
                 <Typography variant="body1" paragraph>
                   Each plate carries a unique rustic charm that enhances your dining experience. The natural clay material adds an earthy essence to your food, subtly enhancing flavors and textures in a way that modern dinnerware cannot replicate.
+                </Typography>
+                <Typography variant="body1" paragraph>
+                  Using clay plates adds an earthy essence to food, enhancing flavor and texture. They're easy to clean, biodegradable, and a sustainable alternative to plastic or metal plates. Embrace a slow, mindful lifestyle with every meal.
                 </Typography>
               </Box>
             )}

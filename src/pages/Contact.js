@@ -1,6 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../Firebase/Firebase';
+import { Snackbar, Alert } from '@mui/material';
 
 const ContactUs = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await addDoc(collection(db, 'contact_messages'), {
+        ...formData,
+        timestamp: new Date().toISOString()
+      });
+
+      setSubmitStatus({
+        open: true,
+        message: 'Message sent successfully!',
+        severity: 'success'
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    } catch (error) {
+      setSubmitStatus({
+        open: true,
+        message: 'Failed to send message. Please try again.',
+        severity: 'error'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="contact-container">
       <div className="contact-info">
@@ -43,27 +96,85 @@ const ContactUs = () => {
         />
       </div>
 
-      {/* Contact Form */}
+      {/* Updated Contact Form */}
       <div className="contact-form">
         <h2>Send Us A Message</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" placeholder="Your Name" required />
+            <input 
+              type="text" 
+              id="name" 
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your Name" 
+              required 
+            />
           </div>
           <div className="form-field">
             <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Your Email" required />
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Your Email" 
+              required 
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="phone">Phone Number:</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Your Phone Number" 
+              required 
+            />
           </div>
           <div className="form-field">
             <label htmlFor="message">Message:</label>
-            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+            <textarea 
+              id="message" 
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Your Message" 
+              rows="5" 
+              required
+            ></textarea>
           </div>
           <div className="form-button">
-            <button type="submit">Send Message</button>
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              style={{ opacity: isSubmitting ? 0.7 : 1 }}
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
           </div>
         </form>
       </div>
+
+      {/* Success/Error Notification */}
+      <Snackbar
+        open={submitStatus.open}
+        autoHideDuration={6000}
+        onClose={() => setSubmitStatus({ ...submitStatus, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setSubmitStatus({ ...submitStatus, open: false })} 
+          severity={submitStatus.severity}
+          sx={{ width: '100%' }}
+        >
+          {submitStatus.message}
+        </Alert>
+      </Snackbar>
 
       <style jsx>{`
         /* Contact Us Page */
